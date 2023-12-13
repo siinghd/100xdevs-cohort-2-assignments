@@ -1,4 +1,4 @@
-const fs = require('fs');
+import fs from 'node:fs';
 
 function expensiveOperation(iterations) {
   for (let i = 0; i < iterations; i++) {
