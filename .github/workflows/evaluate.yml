@@ -16,6 +16,6 @@ jobs:
       with:
         node-version: '20'
     - name: Install dependencies
-      run: npm install
+      run: npm install -G jest
     - name: Run Jest
       run: npm test
