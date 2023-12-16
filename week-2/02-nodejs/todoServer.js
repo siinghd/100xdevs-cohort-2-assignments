@@ -39,11 +39,51 @@
 
   Testing the server - run `npm run test-todoServer` command in terminal
  */
-  const express = require('express');
-  const bodyParser = require('body-parser');
-  
-  const app = express();
-  
-  app.use(bodyParser.json());
-  
-  module.exports = app;
+const express = require('express');
+
+const app = express();
+
+app.use(express.json());
+
+const todos = [];
+
+app
+  .route('/todos')
+  .get(async (req, res) => {
+    res.status(200).json(todos);
+  })
+  .post(async (req, res) => {
+    const todo = req.body;
+    todo.id = todos.length + 1;
+    todos.push(todo);
+    res.status(201).json({ id: todo.id });
+  });
+
+app
+  .route('/todos/:id')
+  .get(async (req, res) => {
+    const todo = todos.find((todo) => todo.id === parseInt(req.params.id));
+    if (!todo) {
+      return res.status(404).send('Todo not found');
+    }
+    res.status(200).json(todo);
+  })
+  .put(async (req, res) => {
+    const todo = todos.find((todo) => todo.id === parseInt(req.params.id));
+    if (!todo) {
+      return res.status(404).send('Todo not found');
+    }
+    todo.title = req.body.title;
+    todo.completed = req.body.completed;
+    res.status(200).json(todo);
+  })
+  .delete(async (req, res) => {
+    const todo = todos.find((todo) => todo.id === parseInt(req.params.id));
+    if (!todo) {
+      return res.status(404).send('Todo not found');
+    }
+    todos.splice(todos.indexOf(todo), 1);
+    res.status(200).json(todo);
+  });
+
+module.exports = app;
