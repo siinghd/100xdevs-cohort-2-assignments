@@ -17,7 +17,12 @@ router.post('/signup', async (req, res) => {
   });
 });
 app.post('/signin', async (req, res) => {
-  const user = await Admin.findOne({username:})
+  const user = await Admin.findOne({ username: req.body.username });
+  if (!user) {
+    return res.status(400).json({
+      error: 'no user found',
+    });
+  }
   const token = jwt.sign(req.body, SECRET);
   return res.status(200).json({
     token,
