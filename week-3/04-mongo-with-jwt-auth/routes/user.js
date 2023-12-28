@@ -66,3 +66,5 @@ router.get('/purchasedCourses', userMiddleware, async (req, res) => {
     purchasedCourses: userWithPopulatedCourses.purchasedCourses,
   });
 });
+
+module.exports = router
