@@ -3,35 +3,86 @@
 
 <head>
   <script>
+    function isDeepEqual(obj1, obj2) {
+      if (obj1 === obj2) {
+        return true;
+      }
+      if (typeof obj1 !== 'object' || typeof obj2 !== 'object' || obj1 == null || obj2 == null) {
+        return false;
+      }
+
+      let keys1 = Object.keys(obj1);
+      let keys2 = Object.keys(obj2);
+
+      if (keys1.length !== keys2.length) {
+        return false;
+      }
+
+      for (let key of keys1) {
+        if (!keys2.includes(key) || !isDeepEqual(obj1[key], obj2[key])) {
+          return false;
+        }
+      }
+
+      return true;
+    }
+
+
     let globalId = 1;
     let todoState = [];
     let oldTodoState = [];
 
-    function addTodoToDom() {
-      
+    function addTodoToDom(todo) {
+      const container = document.getElementById("todos");
+      const todoElement = document.createElement("div");
+      todoElement.id = 'todo-' + todo.id;
+      todoElement.innerHTML = `
+        <h3 id="title-${todo.id}">${todo.title}</h3>
+        <p id="description-${todo.id}">${todo.description}</p>
+        <button onclick='editTodo(${todo.id})'>Edit</button>
+        <button onclick='removeTodo(${todo.id})'>Remove</button>`;
+
+      container.appendChild(todoElement);
     }
 
     function removeTodoFromDom(todo) {
-      
+      const element = document.getElementById('todo-' + todo.id);
+      if (element) {
+        element.remove();
+      }
     }
 
     function updateTodoInDom(oldTodo, newTodo) {
-        
+      const element = document.getElementById('todo-' + oldTodo.id);
+      if (element) {
+        element.innerHTML = `
+          <h3 id="title-${newTodo.id}">${newTodo.title}</h3>
+          <p id="description-${newTodo.id}">${newTodo.description}</p>
+          <button onclick='editTodo(${newTodo.id})'>Edit</button>
+          <button onclick='removeTodo(${newTodo.id})'>Remove</button>`;
+      }
     }
 
+
     function updateState(newTodos) {
-      // calculate the diff b/w newTodos and oldTodos.
-      // More specifically, find out what todos are - 
-      // 1. added
-      // 2. deleted
-      // 3. updated
-      const added = [];
-      const deleted = [];
-      const updated = [];
-      // calculate these 3 arrays
-      // call addTodo, removeTodo, updateTodo functions on each of the
-      // elements
-      oldTodoState = newTodos;
+      const newIds = new Set(newTodos.map(todo => todo.id));
+      const oldIds = new Set(oldTodoState.map(todo => todo.id));
+
+      const added = newTodos.filter(todo => !oldIds.has(todo.id));
+      const deleted = oldTodoState.filter(todo => !newIds.has(todo.id));
+      const updated = newTodos.filter(newTodo => {
+        const oldTodo = oldTodoState.find(oldTodo => oldTodo.id === newTodo.id);
+        return oldTodo && !isDeepEqual(oldTodo, newTodo);
+      });
+
+      added.forEach(addTodoToDom);
+      deleted.forEach(removeTodoFromDom);
+      updated.forEach(newTodo => {
+        const oldTodo = oldTodoState.find(oldTodo => oldTodo.id === newTodo.id);
+        updateTodoInDom(oldTodo, newTodo);
+      });
+
+      oldTodoState = [...newTodos];
     }
 
     function addTodo() {
@@ -42,6 +93,21 @@
         description: description,
         id: globalId++,
       })
+      updateState(todoState);
+    }
+    function editTodo(id) {
+      const title = prompt("Edit title:", document.getElementById("title-" + id).innerText);
+      const description = prompt("Edit description:", document.getElementById("description-" + id).innerText);
+
+      if (title !== null && description !== null) {
+        todoState = todoState.map(todo => 
+          todo.id === id ? { ...todo, title, description } : todo
+        );
+        updateState(todoState);
+      }
+    }
+    function removeTodo(id) {
+      todoState = todoState.filter(todo => todo.id !== id);
       updateState(todoState);
     }
   </script>
