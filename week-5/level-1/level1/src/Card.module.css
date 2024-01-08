@@ -1,0 +1,84 @@
+.card {
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  min-width: 500px;
+  margin: 20px auto;
+  font-family: 'Arial', sans-serif;
+}
+
+.name {
+  color: #333;
+  margin: 0;
+  font-size: 1.5em;
+  font-weight: bold;
+}
+
+.title {
+  color: #555;
+  font-size: 0.95em;
+  margin-top: 5px;
+  margin-bottom: 20px;
+}
+
+.header {
+  color: #333;
+  font-size: 1.2em;
+  margin-top: 20px;
+  margin-bottom: 15px;
+  width: 100%;
+  text-align: left;
+}
+
+.list {
+  color:black;
+  list-style: none;
+  padding: 0;
+  width: 100%;
+  text-align: left;
+}
+
+.listItem {
+  color: #333;
+  margin-bottom: 5px;
+}
+
+.socialLinks {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.button {
+  border: none;
+  border-radius: 4px;
+  padding: 10px 20px;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  text-transform: uppercase;
+  font-size: 0.85em;
+  transition: background-color 0.3s ease;
+}
+
+.linkedin {
+  background-color: #0077b5;
+}
+
+.linkedin:hover {
+  background-color: #005a86;
+}
+
+.twitter {
+  background-color: #1da1f2;
+}
+
+.twitter:hover {
+  background-color: #1a8cd8;
+}
+
