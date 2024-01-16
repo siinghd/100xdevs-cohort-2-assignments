@@ -23,7 +23,7 @@ app.get('/files', function (req, res) {
         return res.status(500).json({ error: 'Failed to retrieve files' });
     }
     res.json(files);
-    });
+    }); 
 });
 
 app.get('/file/:filename', function (req, res) {
@@ -36,7 +36,6 @@ app.get('/file/:filename', function (req, res) {
     res.send(data);
     });
 });
-
 app.all('*', (req, res) => {
     res.status(404).send('Route not found');
 });

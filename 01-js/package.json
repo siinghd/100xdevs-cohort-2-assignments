@@ -3,6 +3,16 @@
   "version": "1.0.0",
   "description": "You are provided empty JavaScript files (or having function signatures) in this directory.  You have to follow the instructions given in each file and write the code in the same file to complete the assignment.",
   "main": "anagram.js",
+  "scripts": {
+    "etestAnagram": "npx jest tests/anagram.test.js",
+    "eea": "npx jest tests/expenditure-analysis.test.js",
+    "efl": "npx jest tests/findLargestElement.test.js",
+    "mcv": "npx jest tests/countVowels.test.js",
+    "mp": "npx jest tests/palindrome.test.js",
+    "mtimes": "npx jest tests/times.test.js",
+    "htodos": "npx jest tests/todo-list.test.js",
+    "hcalc": "npx jest tests/calculator.test.js"
+  },
   "directories": {
     "test": "tests"
   },

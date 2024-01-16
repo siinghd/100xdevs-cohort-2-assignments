@@ -5,28 +5,30 @@ import React, { useState, useCallback } from 'react';
 // useCallback. We're also not passing it down to another component as a prop which is another reason for you to not see it's benefits immedietely.
 
 export function Assignment2() {
-    const [inputText, setInputText] = useState('');
+  const [inputText, setInputText] = useState('');
 
-    // Your code starts here
-    function showAlert() {
+  // Your code starts here
+  const showAlert = () => {
 
-    }
-    // Your code ends here
+    console.log('rerender')
+    alert(inputText)
+  }
+  // Your code ends here
 
-    return (
-        <div>
-            <input
-                type="text"
-                value={inputText}
-                onChange={(e) => setInputText(e.target.value)}
-                placeholder="Enter some text"
-            />
-            <Alert showAlert={showAlert} />
-        </div>
-    );
+  return (
+    <div>
+      <input
+        type="text"
+        value={inputText}
+        onChange={(e) => setInputText(e.target.value)}
+        placeholder="Enter some text"
+      />
+      <Alert showAlert={showAlert} />
+    </div>
+  );
 };
 
-function Alert({showAlert}) {
-    return <button onClick={showAlert}>Show Alert</button>
+function Alert({ showAlert }) {
+  return <button onClick={showAlert}>Show Alert</button>
 }
 

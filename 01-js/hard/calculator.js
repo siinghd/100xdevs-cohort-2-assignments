@@ -15,7 +15,111 @@
 
   Once you've implemented the logic, test your code by running
 */
+class Calculator {
+  constructor() {
+    this.result = 0;
+  }
 
-class Calculator {}
+  add(number) {
+    this.result += number;
+  }
+
+  subtract(number) {
+    this.result -= number;
+  }
+
+  multiply(number) {
+    this.result *= number;
+  }
+
+  divide(number) {
+    if (number === 0) {
+      throw new Error('Division by zero');
+    }
+    this.result /= number;
+  }
+
+  clear() {
+    this.result = 0;
+  }
+
+  getResult() {
+    return this.result;
+  }
+
+  calculate(expression) {
+    const tokens = this.tokenize(expression);
+    const values = [];
+    const operators = [];
+    const precedence = { '+': 1, '-': 1, '*': 2, '/': 2 };
+
+    tokens.forEach((token) => {
+      if (this.isNumber(token)) {
+        values.push(parseFloat(token));
+      } else if (token in precedence) {
+        while (
+          operators.length > 0 &&
+          precedence[operators[operators.length - 1]] >= precedence[token]
+        ) {
+          this.applyOperator(operators, values);
+        }
+        operators.push(token);
+      } else if (token === '(') {
+        operators.push(token);
+      } else if (token === ')') {
+        while (operators[operators.length - 1] !== '(') {
+          this.applyOperator(operators, values);
+        }
+        operators.pop();
+      }
+    });
+
+    while (operators.length > 0) {
+      this.applyOperator(operators, values);
+    }
+
+    this.result = values.pop();
+  }
+
+  tokenize(expression) {
+    const tokens = expression.match(/[+\-*/()]|\d*\.?\d+|\w+/g) || [];
+    tokens.forEach((token) => {
+      if (
+        !this.isNumber(token) &&
+        !['+', '-', '*', '/', '(', ')'].includes(token)
+      ) {
+        throw new Error('Invalid character in expression');
+      }
+    });
+    return tokens;
+  }
+
+  applyOperator(operators, values) {
+    const operator = operators.pop();
+    const b = values.pop();
+    const a = values.pop();
+    switch (operator) {
+      case '+':
+        values.push(a + b);
+        break;
+      case '-':
+        values.push(a - b);
+        break;
+      case '*':
+        values.push(a * b);
+        break;
+      case '/':
+        if (b === 0) throw new Error('Division by zero');
+        values.push(a / b);
+        break;
+      default:
+        throw new Error('Invalid operator');
+    }
+  }
+
+  isNumber(token) {
+    return !isNaN(token) && isFinite(token);
+  }
+}
 
 module.exports = Calculator;
